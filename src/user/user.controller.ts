@@ -6,13 +6,19 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
+@ApiTags('사용자')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  /**
+   * 내 정보 조회
+   * @param req
+   * @returns
+   */
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Get('/info')

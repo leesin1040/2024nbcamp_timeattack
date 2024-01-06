@@ -18,7 +18,7 @@ export class RefreshToken {
   @Column()
   expiryDate: Date;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, (user) => user.refreshToken)
   @JoinColumn({ name: 'user_id' })
   user: User;
 }

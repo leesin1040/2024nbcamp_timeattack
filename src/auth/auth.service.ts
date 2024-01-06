@@ -52,7 +52,9 @@ export class AuthService {
     const payload = { id: userId };
     const accessToken = this.jwtService.sign(payload);
     const refreshToken = new RefreshToken();
-    refreshToken.user.id = userId;
+
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    refreshToken.user = user;
     refreshToken.token = this.jwtService.sign(payload);
     refreshToken.expiryDate = new Date(
       new Date().getTime() + 7 * 24 * 60 * 60 * 1000,
