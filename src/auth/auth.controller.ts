@@ -42,7 +42,7 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('/login')
   async login(@Request() req, @Body() loginDto: LoginDto) {
-    const data = this.authService.login(req.user.id);
+    const data = await this.authService.login(req.user.id);
 
     return {
       statusCode: HttpStatus.OK,

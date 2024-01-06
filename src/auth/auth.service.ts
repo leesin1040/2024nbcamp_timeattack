@@ -60,8 +60,7 @@ export class AuthService {
       new Date().getTime() + 7 * 24 * 60 * 60 * 1000,
     );
     await this.refreshTokenRepository.save(refreshToken);
-
-    return { accessToken, refreshToken: refreshToken.token };
+    return { accessToken: accessToken, refreshToken: refreshToken.token };
   }
 
   /**유저 확인 */
