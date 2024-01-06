@@ -103,3 +103,19 @@ Nest is [MIT licensed](LICENSE).
 ## API 명세
 
 ![api명세](https://github.com/leesin1040/2024nbcamp_timeattack/blob/main/forreadme/2.png?raw=true)
+
+## 환경변수
+
+SERVER_PORT=
+
+DB_HOST=
+DB_PORT=
+DB_USERNAME=
+DB_PASSWORD=
+DB_NAME=
+DB_SYNC=true
+
+PASSWORD_HASH_ROUNDS=
+JWT_SECRET=
+
+## 스웨거 api 완료
