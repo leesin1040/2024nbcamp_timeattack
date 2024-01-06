@@ -42,11 +42,27 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('/login')
   async login(@Request() req, @Body() loginDto: LoginDto) {
-    const data = this.authService.login(req.user.id);
+    const data = await this.authService.login(req.user.id);
 
     return {
       statusCode: HttpStatus.OK,
       message: '로그인 성공',
+      data,
+    };
+  }
+
+  /**
+   * Access 토큰 갱신
+   * @param req
+   * @returns
+   */
+  @HttpCode(HttpStatus.OK)
+  @Post('/refresh')
+  async refresh(@Request() req) {
+    const data = await this.authService.refresh(req.body.refreshToken);
+    return {
+      statusCode: HttpStatus.OK,
+      message: '토큰이 성공적으로 갱신되었습니다.',
       data,
     };
   }

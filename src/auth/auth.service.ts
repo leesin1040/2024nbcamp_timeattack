@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { RegisterDto } from './dtos/register.dto';
 import bcrypt from 'bcrypt';
 import { LoginDto } from './dtos/login.dto';
+import { RefreshToken } from './entities/refreshToken.entity';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +15,8 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(RefreshToken)
+    private readonly refreshTokenRepository: Repository<RefreshToken>,
   ) {}
 
   /**회원가입 */
@@ -45,10 +48,19 @@ export class AuthService {
     return this.login(user.id);
   }
   /**로그인 */
-  login(userId: number) {
+  async login(userId: number) {
     const payload = { id: userId };
     const accessToken = this.jwtService.sign(payload);
-    return { accessToken };
+    const refreshToken = new RefreshToken();
+
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    refreshToken.user = user;
+    refreshToken.token = this.jwtService.sign(payload);
+    refreshToken.expiryDate = new Date(
+      new Date().getTime() + 7 * 24 * 60 * 60 * 1000,
+    );
+    await this.refreshTokenRepository.save(refreshToken);
+    return { accessToken: accessToken, refreshToken: refreshToken.token };
   }
 
   /**유저 확인 */
@@ -62,5 +74,17 @@ export class AuthService {
       return null;
     }
     return { id: user.id };
+  }
+
+  async refresh(refreshToken: string) {
+    const savedToken = await this.refreshTokenRepository.findOne({
+      where: { token: refreshToken },
+    });
+    if (!savedToken || savedToken.expiryDate < new Date()) {
+      throw new BadRequestException('유효하지 않은 토큰입니다.');
+    }
+    const payload = { id: savedToken.user.id };
+    const accessToken = this.jwtService.sign(payload);
+    return { accessToken };
   }
 }
