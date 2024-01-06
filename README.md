@@ -98,4 +98,8 @@ Nest is [MIT licensed](LICENSE).
 
 ## ERD
 
+![erd](https://github.com/leesin1040/2024nbcamp_timeattack/blob/main/forreadme/1.png?raw=true)
+
 ## API 명세
+
+![api명세](https://github.com/leesin1040/2024nbcamp_timeattack/blob/main/forreadme/2.png?raw=true)
