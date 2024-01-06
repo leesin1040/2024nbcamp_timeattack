@@ -22,7 +22,7 @@ async function bootstrap() {
   /**스웨거 */
   const config = new DocumentBuilder()
     .setTitle('2024 내배캠 타임어택')
-    .setDescription('내배캠 타임어택')
+    .setDescription('내배캠 타임어택 최이진')
     .setVersion('1.0')
     .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
     .build();
